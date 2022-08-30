@@ -23,14 +23,17 @@ def get_all_email():
 
     response = requests.get('http://localhost:5025/api/v2/messages', params=params, headers=headers)
     # pprint.pprint(response.json())
-    emails = response.json()
-    items = emails['items']
-    content_user = items[0]
-    content = content_user['Content']
-    body = content['Body']
-    qson = json.loads(body)
-    confirmation_link_url = qson['ConfirmationLinkUrl']
-    token = confirmation_link_url.split('/')[-1]
+    # emails = response.json()
+    # items = emails['items']
+    # content_user = items[0]
+    # content = content_user['Content']
+    # body = content['Body']
+    # qson = json.loads(body)
+    # confirmation_link_url = qson['ConfirmationLinkUri']
+    # token = confirmation_link_url.split('/')[-1]
+    # print()
+    # pprint.pprint(token)
+    token = json.loads(response.json()['items'][0]['Content']['Body'])['ConfirmationLinkUri'].split('/')[-1]
     return token
 
 print(get_all_email())
