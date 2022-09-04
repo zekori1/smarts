@@ -2,7 +2,7 @@ import requests
 
 
 class AccountApi:
-    def __int__(self, host='http://localhost:5051'):
+    def __init__(self, host='http://localhost:5051'):
         self.host = host
 
     def post_v1_account(self, login, email, password):

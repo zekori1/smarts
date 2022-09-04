@@ -4,7 +4,7 @@ import requests
 
 
 class LoginApi:
-    def __int__(self, host='http://localhost:5051'):
+    def __init__(self, host):
         self.host = host
 
     def post_v1_account_login(self, login, password, remember_me):
