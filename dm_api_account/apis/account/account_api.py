@@ -1,30 +1,26 @@
 import requests
+from dm_api_account.models.account.post_v1_account_request_model import RegistrationRequestModel
+from dm_api_account.models.account.get_v1_account_response_model import UserDetailsEnvelopeResponseModel
 
 
 class AccountApi:
     def __init__(self, host='http://localhost:5051'):
         self.host = host
 
-    def post_v1_account(self, login, email, password):
+    def post_v1_account(self, json_data: RegistrationRequestModel):
         headers = {
             'accept': '*/*',
 
         }
 
-        json_data = {
-            'login': login,
-            'email': email,
-            'password': password,
-        }
-
         response = requests.post(
             url=f'{self.host}/v1/account',
             headers=headers,
-            json=json_data
+            json=json_data.to_struct()
         )
         return response
 
-    def get_v1_account(self, x_dm_auth_token):
+    def get_v1_account(self, x_dm_auth_token) -> UserDetailsEnvelopeResponseModel:
         headers = {
             'accept': 'text/plain',
             'X-Dm-Auth-Token': x_dm_auth_token,
@@ -34,7 +30,8 @@ class AccountApi:
             url=f'{self.host}/v1/account',
             headers=headers
         )
-        return response
+        response_json = response.json()
+        return UserDetailsEnvelopeResponseModel(**response_json)
 
     def put_v1_account_token(self, token):
         headers = {
