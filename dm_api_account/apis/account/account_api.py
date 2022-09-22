@@ -1,6 +1,10 @@
 import requests
 from dm_api_account.models.account.post_v1_account_request_model import RegistrationRequestModel
 from dm_api_account.models.account.get_v1_account_response_model import UserDetailsEnvelopeResponseModel
+from dm_api_account.models.account.post_v1_account_password_request_model import ResetPasswordResponseModel
+from dm_api_account.models.account.put_v1_account_email_request_model import ChangeEmailResponseModel
+from dm_api_account.models.account.put_v1_account_password_request_model import ChangePasswordResponseModel
+from dm_api_account.models.account.put_v1_account_token_request_model import UserEnvelopeResponseModel
 
 
 class AccountApi:
@@ -33,7 +37,7 @@ class AccountApi:
         response_json = response.json()
         return UserDetailsEnvelopeResponseModel(**response_json)
 
-    def put_v1_account_token(self, token):
+    def put_v1_account_token(self, token) -> UserEnvelopeResponseModel:
         headers = {
             'accept': 'text/plain',
         }
@@ -43,19 +47,15 @@ class AccountApi:
             headers=headers
 
         )
-        return response
+        response_json = response.json()
+        return UserEnvelopeResponseModel(**response_json)
 
-    def post_v1_account_password(self, login, email, x_dm_auth_token):
+    def post_v1_account_password(self, x_dm_auth_token, json_data: ResetPasswordResponseModel):
         headers = {
             'accept': 'text/plain',
             'X-Dm-Auth-Token': x_dm_auth_token,
             # Already added when you pass json= but not when you pass data=
             # 'Content-Type': 'application/json',
-        }
-
-        json_data = {
-            'login': login,
-            'email': email,
         }
 
         response = requests.post(
@@ -65,19 +65,12 @@ class AccountApi:
         )
         return response
 
-    def put_v1_account_password(self, login, token, oldpassword, newpassword, x_dm_auth_token):
+    def put_v1_account_password(self, x_dm_auth_token, json_data: ChangePasswordResponseModel):
         headers = {
             'accept': 'text/plain',
             'X-Dm-Auth-Token': x_dm_auth_token,
             # Already added when you pass json= but not when you pass data=
             # 'Content-Type': 'application/json',
-        }
-
-        json_data = {
-            'login': login,
-            'token': token,
-            'oldPassword': oldpassword,
-            'newPassword': newpassword,
         }
 
         response = requests.put(
@@ -87,18 +80,12 @@ class AccountApi:
         return response
         # один токен берем от авторизации другой от смены пароля на почте
 
-    def put_v1_account_email(self, login, password, email, x_dm_auth_token):
+    def put_v1_account_email(self, x_dm_auth_token, json_data: ChangeEmailResponseModel):
         headers = {
             'accept': 'text/plain',
             'X-Dm-Auth-Token': x_dm_auth_token,
             # Already added when you pass json= but not when you pass data=
             # 'Content-Type': 'application/json',
-        }
-
-        json_data = {
-            'login': login,
-            'password': password,
-            'email': email,
         }
 
         response = requests.put(
