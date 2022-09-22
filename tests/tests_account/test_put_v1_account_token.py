@@ -1,5 +1,6 @@
-from dm_api_account.apis.account import AccountApi
+from dm_api_account.apis.account.account_api import AccountApi
 from helpers.mailhog.mailhog_client import MailHogClient
+from dm_api_account.models.account.put_v1_account_token_request_model import UserEnvelopeResponseModel
 
 
 def test_put_v1_account_token():
