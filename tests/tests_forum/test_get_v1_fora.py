@@ -1,4 +1,4 @@
-from dm_api_forum.apif.forum_api import ForumApi
+from dm_api_forum.apis.forum_api import ForumApi
 from dm_api_account.apis.login.login_api import LoginApi
 from dm_api_account.models.login.post_v1_account_login_request_model import LoginCredentialsRequestModel
 

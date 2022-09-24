@@ -1,9 +1,14 @@
 import requests
+from restclient.restclient import RestClient
 
 
 class ForumApi:
-    def __init__(self, host='http://localhost:5051'):
+    def __init__(self, host='http://localhost:5051', headers=None):
+        self.headers = headers
         self.host = host
+        self.client = RestClient(host=self.host)
+        if headers:
+            self.client.headers = self
 
     def get_v1_fora(self, x_dm_auth_token):
         headers = {
@@ -11,8 +16,8 @@ class ForumApi:
             'X-Dm-Auth-Token': x_dm_auth_token,
         }
 
-        response = requests.get(
-            f'{self.host}/v1/fora',
+        response = self.client.get(
+            path=f'/v1/fora',
             headers=headers
         )
         return response
@@ -22,8 +27,8 @@ class ForumApi:
             'accept': 'text/plain',
         }
 
-        response = requests.get(
-            f'{self.host}/v1/fora/%D0%9E%D0%B1%D1%89%D0%B8%D0%B9',
+        response = self.client.get(
+            path=f'/v1/fora/%D0%9E%D0%B1%D1%89%D0%B8%D0%B9',
             headers=headers
         )
         return response
@@ -36,8 +41,8 @@ class ForumApi:
             'accept': 'text/plain',
         }
 
-        response = requests.get(
-            f'{self.host}/v1/fora/%D0%98%D0%B3%D1%80%D0%BE%D0%B2%D1%8B%D0%B5%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%8B/moderators',
+        response = self.client.get(
+            path=f'/v1/fora/%D0%98%D0%B3%D1%80%D0%BE%D0%B2%D1%8B%D0%B5%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%8B/moderators',
             headers=headers
         )
         return response
@@ -51,8 +56,8 @@ class ForumApi:
             'attached': 'true',
         }
 
-        response = requests.get(
-            f'{self.host}/v1/fora/%D0%98%D0%B3%D1%80%D0%BE%D0%B2%D1%8B%D0%B5%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%8B/topics',
+        response = self.client.get(
+            path=f'/v1/fora/%D0%98%D0%B3%D1%80%D0%BE%D0%B2%D1%8B%D0%B5%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%8B/topics',
             params=params, headers=headers
         )
         return response
@@ -139,8 +144,8 @@ class ForumApi:
             ],
         }
 
-        response = requests.post(
-            f'{self.host}/v1/fora/%D0%9E%D0%B1%D1%89%D0%B8%D0%B9/topics',
+        response = self.client.post(
+            path=f'/v1/fora/%D0%9E%D0%B1%D1%89%D0%B8%D0%B9/topics',
             headers=headers,
             json=json_data
         )

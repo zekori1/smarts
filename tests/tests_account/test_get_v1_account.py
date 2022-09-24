@@ -1,6 +1,15 @@
 from dm_api_account.apis.account.account_api import AccountApi
 from dm_api_account.apis.login.login_api import LoginApi
 from dm_api_account.models.login.post_v1_account_login_request_model import LoginCredentialsRequestModel
+import structlog
+
+import structlog
+
+structlog.configure(
+    processors=[
+        structlog.processors.JSONRenderer(indent=4, sort_keys=True, ensure_ascii=False),
+    ]
+)
 
 
 def test_post_v1_account_login():
@@ -19,11 +28,6 @@ def test_post_v1_account_login():
     )
     print(response)
 
-
-
-
-
-
     # account_login = LoginApi()
     # response = account_login.post_v1_account_login(
     #     login='test_user_5',
@@ -35,7 +39,6 @@ def test_post_v1_account_login():
     # x_dm = response.headers.get('X-Dm-Auth-Token')
     # print(x_dm)
     # assert response.status_code == 200
-
 
 # def test_get_v1_account():
 #     get_account = AccountApi()

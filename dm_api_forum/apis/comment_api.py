@@ -1,9 +1,14 @@
 import requests
+from restclient.restclient import RestClient
 
 
 class CommentApi:
-    def __init__(self, host='http://localhost:5051'):
+    def __init__(self, host='http://localhost:5051', headers=None):
+        self.headers = headers
         self.host = host
+        self.client = RestClient(host=self.host)
+        if headers:
+            self.client.headers = self
 
     def get_v1_forum_comments_id(self):
         headers = {

@@ -5,11 +5,16 @@ from dm_api_account.models.account.post_v1_account_password_request_model import
 from dm_api_account.models.account.put_v1_account_email_request_model import ChangeEmailResponseModel
 from dm_api_account.models.account.put_v1_account_password_request_model import ChangePasswordResponseModel
 from dm_api_account.models.account.put_v1_account_token_request_model import UserEnvelopeResponseModel
+from restclient.restclient import RestClient
 
 
 class AccountApi:
-    def __init__(self, host='http://localhost:5051'):
+    def __init__(self, host='http://localhost:5051', headers=None):
+        self.headers = headers
         self.host = host
+        self.client = RestClient(host=self.host)
+        if headers:
+            self.client.headers = self
 
     def post_v1_account(self, json_data: RegistrationRequestModel):
         headers = {
@@ -17,8 +22,8 @@ class AccountApi:
 
         }
 
-        response = requests.post(
-            url=f'{self.host}/v1/account',
+        response = self.client.post(
+            path=f'/v1/account',
             headers=headers,
             json=json_data.to_struct()
         )
@@ -30,8 +35,8 @@ class AccountApi:
             'X-Dm-Auth-Token': x_dm_auth_token,
         }
 
-        response = requests.get(
-            url=f'{self.host}/v1/account',
+        response = self.client.get(
+            path=f'/v1/account',
             headers=headers
         )
         response_json = response.json()
@@ -42,8 +47,8 @@ class AccountApi:
             'accept': 'text/plain',
         }
 
-        response = requests.put(
-            url=f'{self.host}/v1/account/{token}',
+        response = self.client.put(
+            path=f'/v1/account/{token}',
             headers=headers
 
         )
@@ -58,8 +63,8 @@ class AccountApi:
             # 'Content-Type': 'application/json',
         }
 
-        response = requests.post(
-            url=f'{self.host}/v1/account/password',
+        response = self.client.post(
+            path=f'/v1/account/password',
             headers=headers,
             json=json_data
         )
@@ -73,8 +78,8 @@ class AccountApi:
             # 'Content-Type': 'application/json',
         }
 
-        response = requests.put(
-            url=f'{self.host}/v1/account/password',
+        response = self.client.put(
+            path=f'/v1/account/password',
             headers=headers,
             json=json_data)
         return response
@@ -88,8 +93,8 @@ class AccountApi:
             # 'Content-Type': 'application/json',
         }
 
-        response = requests.put(
-            url=f'{self.host}/v1/account/email',
+        response = self.client.put(
+            path=f'/v1/account/email',
             headers=headers,
             json=json_data
         )
