@@ -3,3 +3,4 @@ pytest
 json
 jsonmodels
 structlog
+vyper-config

@@ -9,7 +9,7 @@ from restclient.restclient import RestClient
 
 
 class AccountApi:
-    def __init__(self, host='http://localhost:5051', headers=None):
+    def __init__(self, host, headers=None):
         self.headers = headers
         self.host = host
         self.client = RestClient(host=self.host)

@@ -3,7 +3,7 @@ from restclient.restclient import RestClient
 
 
 class ForumApi:
-    def __init__(self, host='http://localhost:5051', headers=None):
+    def __init__(self, host, headers=None):
         self.headers = headers
         self.host = host
         self.client = RestClient(host=self.host)
@@ -28,7 +28,7 @@ class ForumApi:
         }
 
         response = self.client.get(
-            path=f'/v1/fora/%D0%9E%D0%B1%D1%89%D0%B8%D0%B9',
+            path=f'/v1/fora/{forum_id}',
             headers=headers
         )
         return response
@@ -47,18 +47,14 @@ class ForumApi:
         )
         return response
 
-    def get_v1_fora_id_topics(self):
+    def get_v1_fora_id_topics(self, forum_id):
         headers = {
             'accept': 'text/plain',
         }
 
-        params = {
-            'attached': 'true',
-        }
-
         response = self.client.get(
-            path=f'/v1/fora/%D0%98%D0%B3%D1%80%D0%BE%D0%B2%D1%8B%D0%B5%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%8B/topics',
-            params=params, headers=headers
+            path=f'/v1/fora/{forum_id}/topics',
+            headers=headers
         )
         return response
 
