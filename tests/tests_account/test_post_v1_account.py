@@ -1,8 +1,8 @@
 from dm_api_account.models.account.post_v1_account_request_model import RegistrationRequestModel
 
 
-def test_post_v1_account(account_api):
-    response = account_api.post_v1_account(
+def test_post_v1_account(dm_api_account):
+    response = dm_api_account.account_api.post_v1_account(
         json_data=RegistrationRequestModel(
             login='test_user_10',
             email='test_user_10@mail.ru',

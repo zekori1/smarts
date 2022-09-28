@@ -12,8 +12,8 @@ structlog.configure(
 decoder = lambda x: quote(x.encode('UTF-8'))
 
 
-def test_get_v1_fora(login_api, forum_api):
-    response = login_api.post_v1_account_login(
+def test_get_v1_fora(dm_api_account, dm_api_forum):
+    response = dm_api_account.login_api.post_v1_account_login(
         json_data=LoginCredentialsRequestModel(
             login='test_user_7',
             password='test_user_7',
@@ -23,7 +23,7 @@ def test_get_v1_fora(login_api, forum_api):
     x_dm = response.headers.get('X-Dm-Auth-Token')
     print(x_dm)
 
-    response = forum_api.get_v1_fora(
+    response = dm_api_forum.forum_api.get_v1_fora(
         x_dm_auth_token=x_dm
     )
     forum_id = response.json()['resources'][0]["id"]

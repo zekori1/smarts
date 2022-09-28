@@ -1,0 +1,15 @@
+service:
+  dm_api_account: http://localhost:5051
+  dm_api_forum: http://localhost:5051
+
+
+mailhog:
+  host: http://localhost:5025
+
+database:
+  postgresql:
+    host: localhost
+    dbname: dm3.5
+    user: postgres
+    password: admin
+    port: 5432

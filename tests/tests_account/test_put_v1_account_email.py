@@ -2,8 +2,8 @@ from dm_api_account.models.login.post_v1_account_login_request_model import Logi
 from dm_api_account.models.account.put_v1_account_email_request_model import ChangeEmailResponseModel
 
 
-def test_post_v1_account_login(login_api, account_api):
-    response = login_api.post_v1_account_login(
+def test_post_v1_account_login(dm_api_account):
+    response = dm_api_account.login_api.post_v1_account_login(
         json_data=LoginCredentialsRequestModel(
             login='test_user_5',
             password='test_user_5',
@@ -14,7 +14,7 @@ def test_post_v1_account_login(login_api, account_api):
     print(x_dm)
 
     # def test_put_v1_account_email():
-    response = account_api.put_v1_account_email(
+    response = dm_api_account.account_api.put_v1_account_email(
         x_dm_auth_token=x_dm,
         json_data=ChangeEmailResponseModel(
             login='test_user_8',
