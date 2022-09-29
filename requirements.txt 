@@ -4,3 +4,5 @@ json
 jsonmodels
 structlog
 vyper-config
+records
+psycopg2

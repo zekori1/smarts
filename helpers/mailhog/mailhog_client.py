@@ -1,19 +1,24 @@
 import json
 import re
 import requests
+from restclient.restclient import RestClient
 
 
 class MailHogClient:
-    def __init__(self, host):
+    def __init__(self, host, headers=None):
+        self.headers = headers
         self.host = host
+        self.client = RestClient(host=self.host)
+        if headers:
+            self.client.headers = self
 
     def get_all_email(self, limit=50):
         params = {
             'limit': str(limit),
         }
 
-        response = requests.get(
-            url=f'{self.host}/api/v2/messages',
+        response = self.client.get(
+            path=f'/api/v2/messages',
             params=params,
         )
         return response
@@ -35,69 +40,14 @@ class MailHogClient:
                     token = content['ConfirmationLinkUri'].split('/')[-1]
         return token
 
-# mailhog = MailHogClient()
-# # # # print(mailhog.get_token_from_last_email())
-# client = MailHogClient()
-# response = client.get_all_email()
-# #
-# user = input('Введи имя пользователя:')
-#
-#
-# def get_token(user, token_type):
-#     response = client.get_all_email()
-#     token = None
-#
-#     for email in response.json()['items']:
-#         content = json.loads(email['Content']['Body'])
-#         if re.findall(f'ConfirmationLinkUri.*{token_type}', str(content)):
-#             if content['Login'] == user:
-#                 token = content['ConfirmationLinkUri'].split('/')[-1]
-#     return token
-#
-#
-# print(get_token(user, 'password'))
+    def delete_email_by_id(self, email_id):
 
+        response = self.client.delete(
+            path=f'/api/v1/messages/{email_id}',
+        )
+        return response
 
-# print(mailhog.get_all_email(limit=1).json( ))
-# pprint.pprint(mailhog.get_all_email(limit=1).json())
-
-# def get_token_from_email_password(self):
-#     emails = self.get_all_email(limit=5)
-#     for email in response.json['items']:
-# token = json.loads(emails.json()['items'][0]['Content']['Body'])['ConfirmationLinkUrl'].split('/')[-1]
-# pprint.pprint(emails.json()['items'])
-# i = emails.json()['items']
-# pprint.pprint(emails.content)
-# token_every = json.loads(emails.json()['items'][0]['Content']['Body'])['Login']
-# emails_slov  = emails
-# print(emails_slov)
-# for item in i:
-#     print(item, '->', i.values())
-# for kluch, letter in emails_slov.items():
-#     if kluch == '_content':
-#         print(letter)
-#         # for kluchh, znachenie in letter.items():
-#         #     if kluchh == 'items':
-#         #         print(znachenie)
-
-#     print(item)
-# pprint.pprint(emails_slov)
-
-# while token_every == 'test_uses_6':
-#     print(token_every)
-
-# print(i)
-# token_every = json.loads(emails.json()['items'][0]['Content']['Body'])['Login']
-# for item in
-# print(token_every)
-# pprint.pprint(emails.json())
-# return json.load()
-# token = json.loads(emails.json()['items'][0])
-# return json
-# print(emails.json()['items'])
-# print(emails.raw)
-
-# print(emails.request())
-
-# mailhog = MailHogClient()
-# print(mailhog.get_token_from_email_password())
+    def delete_all_emails(self):
+        emails_ids = [_['ID'] for _ in self.get_all_email().json()['items']]
+        for email_id in emails_ids:
+            self.delete_email_by_id(email_id=email_id)

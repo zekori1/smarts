@@ -1,5 +1,6 @@
 import pytest
 import structlog
+from database.db_3_5 import DmDataBase
 from helpers.mailhog.mailhog_client import MailHogClient
 from service.dm_api_account import DmApiAccount
 from service.dm_api_forum import DmApiForum
@@ -56,3 +57,22 @@ def dm_api_account():
 @pytest.fixture
 def dm_api_forum():
     return DmApiForum(host=v.get('service.dm_api_forum'))
+
+
+db_connection = None
+
+
+@pytest.fixture
+def dm_db():
+    global db_connection
+    if db_connection is None:
+        db_connection = DmDataBase(
+            host=v.get('database.postgresql.host'),
+            dbname=v.get('database.postgresql.dbname'),
+            user=v.get('database.postgresql.user'),
+            password=v.get('database.postgresql.password'),
+            port=v.get('database.postgresql.port')
+        )
+    yield db_connection
+
+    db_connection.close()
