@@ -37,7 +37,7 @@ def test_post_v1_fora_id(dm_api_account, dm_api_forum, dm_db, login, password, r
     print(topics)
 
     author = User(
-        login='test_user_10',
+        login=login,
     )
     response = dm_api_forum.forum_api.post_v1_fora_id_topics(
         forum_id=po,
