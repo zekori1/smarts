@@ -1,5 +1,6 @@
 import requests
 from restclient.restclient import RestClient
+from apis.dm_api_forum.models.topics.post_v1_fora_id_topics import TopicsRequestModel
 
 
 class ForumApi:
@@ -58,7 +59,7 @@ class ForumApi:
         )
         return response
 
-    def post_v1_fora_id_topics(self, x_dm_auth_token):
+    def post_v1_fora_id_topics(self, x_dm_auth_token, forum_id, json_data: TopicsRequestModel):
         headers = {
             'accept': 'text/plain',
             'X-Dm-Auth-Token': x_dm_auth_token,
@@ -66,84 +67,85 @@ class ForumApi:
             # 'Content-Type': 'application/json',
         }
 
-        json_data = {
-            'id': '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-            'author': {
-                'login': 'test_user_9',
-                'roles': [
-                    'Guest',
-                ],
-                'mediumPictureUrl': 'string',
-                'smallPictureUrl': 'string',
-                'status': 'string',
-                'rating': {
-                    'enabled': True,
-                    'quality': 0,
-                    'quantity': 0,
-                },
-                'online': '2022-09-19T00:55:09.370Z',
-                'name': 'string',
-                'location': 'string',
-                'registration': '2022-09-19T00:55:09.370Z',
-            },
-            'created': '2022-09-19T00:55:09.370Z',
-            'title': 'Я сделал тему с фронта, вернул ее в topic и делаю новую тему через POST',
-            'description': 'Пробую писать в value, хз че выйдет',
-            'attached': True,
-            'closed': True,
-            'lastComment': {
-                'created': '2022-09-19T00:55:09.371Z',
-                'author': {
-                    'login': 'string',
-                    'roles': [
-                        'Guest',
-                    ],
-                    'mediumPictureUrl': 'string',
-                    'smallPictureUrl': 'string',
-                    'status': 'string',
-                    'rating': {
-                        'enabled': True,
-                        'quality': 0,
-                        'quantity': 0,
-                    },
-                    'online': '2022-09-19T00:55:09.371Z',
-                    'name': 'string',
-                    'location': 'string',
-                    'registration': '2022-09-19T00:55:09.371Z',
-                },
-            },
-            'commentsCount': 0,
-            'unreadCommentsCount': 0,
-            'forum': {
-                'id': 'Общий',
-                'unreadTopicsCount': 0,
-            },
-            'likes': [
-                {
-                    'login': 'string',
-                    'roles': [
-                        'Guest',
-                    ],
-                    'mediumPictureUrl': 'string',
-                    'smallPictureUrl': 'string',
-                    'status': 'string',
-                    'rating': {
-                        'enabled': True,
-                        'quality': 0,
-                        'quantity': 0,
-                    },
-                    'online': '2022-09-19T00:55:09.371Z',
-                    'name': 'string',
-                    'location': 'string',
-                    'registration': '2022-09-19T00:55:09.371Z',
-                },
-            ],
-        }
+        # json_data = {
+        #     'id': '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        #     'author': {
+        #         'login': 'test_user_9',
+        #         'roles': [
+        #             'Guest',
+        #         ],
+        #         'mediumPictureUrl': 'string',
+        #         'smallPictureUrl': 'string',
+        #         'status': 'string',
+        #         'rating': {
+        #             'enabled': True,
+        #             'quality': 0,
+        #             'quantity': 0,
+        #         },
+        #         'online': '2022-09-19T00:55:09.370Z',
+        #         'name': 'string',
+        #         'location': 'string',
+        #         'registration': '2022-09-19T00:55:09.370Z',
+        #     },
+        #     'created': '2022-09-19T00:55:09.370Z',
+        #     'title': 'Я сделал тему с фронта, вернул ее в topic и делаю новую тему через POST',
+        #     'description': 'Пробую писать в value, хз че выйдет',
+        #     'attached': True,
+        #     'closed': True,
+        #     'lastComment': {
+        #         'created': '2022-09-19T00:55:09.371Z',
+        #         'author': {
+        #             'login': 'string',
+        #             'roles': [
+        #                 'Guest',
+        #             ],
+        #             'mediumPictureUrl': 'string',
+        #             'smallPictureUrl': 'string',
+        #             'status': 'string',
+        #             'rating': {
+        #                 'enabled': True,
+        #                 'quality': 0,
+        #                 'quantity': 0,
+        #             },
+        #             'online': '2022-09-19T00:55:09.371Z',
+        #             'name': 'string',
+        #             'location': 'string',
+        #             'registration': '2022-09-19T00:55:09.371Z',
+        #         },
+        #     },
+        #     'commentsCount': 0,
+        #     'unreadCommentsCount': 0,
+        #     'forum': {
+        #         'id': 'Общий',
+        #         'unreadTopicsCount': 0,
+        #     },
+        #     'likes': [
+        #         {
+        #             'login': 'string',
+        #             'roles': [
+        #                 'Guest',
+        #             ],
+        #             'mediumPictureUrl': 'string',
+        #             'smallPictureUrl': 'string',
+        #             'status': 'string',
+        #             'rating': {
+        #                 'enabled': True,
+        #                 'quality': 0,
+        #                 'quantity': 0,
+        #             },
+        #             'online': '2022-09-19T00:55:09.371Z',
+        #             'name': 'string',
+        #             'location': 'string',
+        #             'registration': '2022-09-19T00:55:09.371Z',
+        #         },
+        #     ],
+        # }
 
         response = self.client.post(
-            path=f'/v1/fora/%D0%9E%D0%B1%D1%89%D0%B8%D0%B9/topics',
+            path=f'/v1/fora/{forum_id}/topics',
+            # path=f'/v1/fora/%D0%9E%D0%B1%D1%89%D0%B8%D0%B9/topics',
             headers=headers,
-            json=json_data
+            json=json_data.to_struct()
         )
         return response
 

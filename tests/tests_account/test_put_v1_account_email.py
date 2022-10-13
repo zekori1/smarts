@@ -1,26 +1,37 @@
-from dm_api_account.models.login.post_v1_account_login_request_model import LoginCredentialsRequestModel
-from dm_api_account.models.account.put_v1_account_email_request_model import ChangeEmailResponseModel
+from apis.dm_api_account import LoginCredentialsRequestModel
+from apis.dm_api_account.models.account.put_v1_account_email_request_model import ChangeEmailResponseModel
+import pytest
+
+import structlog
+
+structlog.configure(
+    processors=[
+        structlog.processors.JSONRenderer(indent=4, sort_keys=True, ensure_ascii=False),
+    ]
+)
 
 
-def test_post_v1_account_login(dm_api_account):
+@pytest.mark.parametrize('login, password, email, remember_me',
+                         [('test_user_10', 'test_user_10', 'test_user_xui@mail.ru', True)])
+def test_post_v1_account_login(dm_api_account, dm_db, login, password, email, remember_me):
     response = dm_api_account.login_api.post_v1_account_login(
         json_data=LoginCredentialsRequestModel(
-            login='test_user_5',
-            password='test_user_5',
-            remember_me=True
+            login=login,
+            password=password,
+            remember_me=remember_me
         )
     )
     x_dm = response.headers.get('X-Dm-Auth-Token')
     print(x_dm)
 
-    # def test_put_v1_account_email():
     response = dm_api_account.account_api.put_v1_account_email(
         x_dm_auth_token=x_dm,
         json_data=ChangeEmailResponseModel(
-            login='test_user_8',
-            password='test_user_88',
-            email='test_user_8@mail.ru',
+            login=login,
+            password=password,
+            email=email
         )
     )
-    print(response)
     assert response.status_code == 200
+    rows = dm_db.get_user_by_email(email=email)
+    assert rows[0]['Email'] == email

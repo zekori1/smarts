@@ -65,14 +65,14 @@ db_connection = None
 @pytest.fixture
 def dm_db():
     global db_connection
+
     if db_connection is None:
         db_connection = DmDataBase(
             host=v.get('database.postgresql.host'),
             dbname=v.get('database.postgresql.dbname'),
+            port=v.get('database.postgresql.port'),
             user=v.get('database.postgresql.user'),
-            password=v.get('database.postgresql.password'),
-            port=v.get('database.postgresql.port')
+            password=v.get('database.postgresql.password')
         )
     yield db_connection
-
-    db_connection.close()
+    # db_connection.close()

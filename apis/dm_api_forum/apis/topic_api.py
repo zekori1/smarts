@@ -1,18 +1,23 @@
 import requests
+from restclient.restclient import RestClient
 
 
 class TopicApi:
-    def __init__(self, host='http://localhost:5051'):
+    def __init__(self, host, headers=None):
+        self.headers = headers
         self.host = host
+        self.client = RestClient(host=self.host)
+        if headers:
+            self.client.headers = self
 
-    def get_v1_topics_id(self, x_dm_auth_token):
+    def get_v1_topics_id(self, x_dm_auth_token, topics_id):
         headers = {
             'accept': 'text/plain',
             'X-Dm-Auth-Token': x_dm_auth_token,
         }
 
-        response = requests.get(
-            f'{self.host}/v1/topics/ebfef5f8-7f7d-42df-ab1a-081bf8da8ad7',
+        response = self.client.get(
+            path=f'/v1/topics/{topics_id}',
             headers=headers
         )
         return response
@@ -99,8 +104,8 @@ class TopicApi:
             ],
         }
 
-        response = requests.patch(
-            f'{self.host}/v1/topics/88e95695-8f9c-4477-9bcc-703cf7a55b0b',
+        response = self.client.patch(
+            path=f'/v1/topics/88e95695-8f9c-4477-9bcc-703cf7a55b0b',
             headers=headers,
             json=json_data
         )
@@ -121,8 +126,8 @@ class TopicApi:
             'Content-Type': 'application/x-www-form-urlencoded',
         }
 
-        response = requests.post(
-            f'{self.host}/v1/topics/88e95695-8f9c-4477-9bcc-703cf7a55b0b/likes',
+        response = self.client.post(
+            path=f'/v1/topics/88e95695-8f9c-4477-9bcc-703cf7a55b0b/likes',
             headers=headers
         )
         return response
@@ -133,8 +138,8 @@ class TopicApi:
             'X-Dm-Auth-Token': x_dm_auth_token,
         }
 
-        response = requests.delete(
-            f'{self.host}/v1/topics/88e95695-8f9c-4477-9bcc-703cf7a55b0b/likes',
+        response = self.client.delete(
+            path=f'/v1/topics/88e95695-8f9c-4477-9bcc-703cf7a55b0b/likes',
             headers=headers
         )
         return response
@@ -192,8 +197,8 @@ class TopicApi:
             ],
         }
 
-        response = requests.post(
-            f'{self.host}/v1/topics/88e95695-8f9c-4477-9bcc-703cf7a55b0b/comments',
+        response = self.client.post(
+            path=f'/v1/topics/88e95695-8f9c-4477-9bcc-703cf7a55b0b/comments',
             headers=headers,
             json=json_data
         )
@@ -210,8 +215,8 @@ class TopicApi:
             'X-Dm-Auth-Token': x_dm_auth_token,
         }
 
-        response = requests.get(
-            f'{self.host}/v1/topics/88e95695-8f9c-4477-9bcc-703cf7a55b0b/comments',
+        response = self.client.get(
+            path=f'/v1/topics/88e95695-8f9c-4477-9bcc-703cf7a55b0b/comments',
             headers=headers
         )
         return response
@@ -222,8 +227,8 @@ class TopicApi:
             'X-Dm-Auth-Token': x_dm_auth_token,
         }
 
-        response = requests.delete(
-            f'{self.host}/v1/topics/88e95695-8f9c-4477-9bcc-703cf7a55b0b/comments/unread',
+        response = self.client.delete(
+            path=f'/v1/topics/88e95695-8f9c-4477-9bcc-703cf7a55b0b/comments/unread',
             headers=headers
         )
         return response

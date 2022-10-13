@@ -1,10 +1,9 @@
-import requests
-from dm_api_account.models.account.post_v1_account_request_model import RegistrationRequestModel
-from dm_api_account.models.account.get_v1_account_response_model import UserDetailsEnvelopeResponseModel
-from dm_api_account.models.account.post_v1_account_password_request_model import ResetPasswordResponseModel
-from dm_api_account.models.account.put_v1_account_email_request_model import ChangeEmailResponseModel
-from dm_api_account.models.account.put_v1_account_password_request_model import ChangePasswordResponseModel
-from dm_api_account.models.account.put_v1_account_token_request_model import UserEnvelopeResponseModel
+from apis.dm_api_account.models.account.post_v1_account_request_model import RegistrationRequestModel
+from apis.dm_api_account.models.account.get_v1_account_response_model import UserDetailsEnvelopeResponseModel
+from apis.dm_api_account.models.account.post_v1_account_password_request_model import ResetPasswordResponseModel
+from apis.dm_api_account.models.account.put_v1_account_email_request_model import ChangeEmailResponseModel
+from apis.dm_api_account.models.account.put_v1_account_password_request_model import ChangePasswordResponseModel
+from apis.dm_api_account.models.account.put_v1_account_token_request_model import UserEnvelopeResponseModel
 from restclient.restclient import RestClient
 
 
@@ -42,7 +41,7 @@ class AccountApi:
         response_json = response.json()
         return UserDetailsEnvelopeResponseModel(**response_json)
 
-    def put_v1_account_token(self, token) -> UserEnvelopeResponseModel:
+    def put_v1_account_token(self, token: str) -> UserEnvelopeResponseModel:
         headers = {
             'accept': 'text/plain',
         }
@@ -66,7 +65,7 @@ class AccountApi:
         response = self.client.post(
             path=f'/v1/account/password',
             headers=headers,
-            json=json_data
+            json=json_data.to_struct()
         )
         return response
 
@@ -81,7 +80,8 @@ class AccountApi:
         response = self.client.put(
             path=f'/v1/account/password',
             headers=headers,
-            json=json_data)
+            json=json_data.to_struct()
+        )
         return response
         # один токен берем от авторизации другой от смены пароля на почте
 
@@ -92,10 +92,9 @@ class AccountApi:
             # Already added when you pass json= but not when you pass data=
             # 'Content-Type': 'application/json',
         }
-
         response = self.client.put(
             path=f'/v1/account/email',
             headers=headers,
-            json=json_data
+            json=json_data.to_struct()
         )
         return response

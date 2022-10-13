@@ -1,4 +1,4 @@
-from dm_api_account.models.login.post_v1_account_login_request_model import LoginCredentialsRequestModel
+from apis.dm_api_account import LoginCredentialsRequestModel
 
 
 def test_post_v1_account_login(dm_api_account):

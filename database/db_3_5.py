@@ -2,6 +2,7 @@ import inspect
 import uuid
 import records
 import structlog
+from typing import List, Dict
 
 
 class DmDataBase:
@@ -54,7 +55,7 @@ class DmDataBase:
         '''
         self._send_bulk_query(query)
 
-    def get_user_by_login(self, login):
+    def get_user_by_login(self, login: str) -> List[Dict]:
         query = f'''
               SELECT * 
               FROM "public"."Users"
@@ -63,3 +64,11 @@ class DmDataBase:
         rows = self._send_query(query).as_dict()
         return rows
 
+    def get_user_by_email(self, email: str) -> List[Dict]:
+        query = f'''
+              SELECT * 
+              FROM "public"."Users"
+              WHERE "Email" = '{email}'
+              '''
+        rows = self._send_query(query).as_dict()
+        return rows

@@ -1,5 +1,5 @@
 import requests
-from dm_api_account.models.login.post_v1_account_login_request_model import LoginCredentialsRequestModel
+from apis.dm_api_account.models.login.post_v1_account_login_request_model import LoginCredentialsRequestModel
 from restclient.restclient import RestClient
 
 
@@ -11,7 +11,7 @@ class LoginApi:
         if headers:
             self.client.headers = self
 
-    def post_v1_account_login(self, json_data: LoginCredentialsRequestModel):
+    def post_v1_account_login(self, json_data: LoginCredentialsRequestModel) -> requests.Response:
         headers = {
             'accept': 'text/plain',
         }

@@ -4,5 +4,7 @@ json
 jsonmodels
 structlog
 vyper-config
+pyhamcrest
 records
 psycopg2
+jsondiff

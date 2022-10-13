@@ -1,9 +1,16 @@
-def test_post_v1_account_login(dm_api_account):
-    response = dm_api_account.login_api.post_v1_account_login(
-        login='test_user_9',
-        password='test_user_9',
-        remember_me=True
+import pytest
+from apis.dm_api_account import LoginCredentialsRequestModel
 
+
+@pytest.mark.parametrize('login, password, remember_me', [('test_user_10', 'test_user_10', True)])
+def test_post_v1_account_login(dm_api_account, dm_db, login, password, remember_me):
+    response = dm_api_account.login_api.post_v1_account_login(
+        json_data=LoginCredentialsRequestModel(
+            login=login,
+            password=password,
+            remember_me=remember_me
+
+        )
     )
     x_dm = response.headers.get('X-Dm-Auth-Token')
     print(x_dm)

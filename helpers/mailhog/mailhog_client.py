@@ -28,7 +28,7 @@ class MailHogClient:
         token = json.loads(emails.json()['items'][0]['Content']['Body'])['ConfirmationLinkUrl'].split('/')[-1]
         return token
 
-    def get_token(self, user='test_user_8', token_type='password'):
+    def get_token(self, user='test_user_10', token_type='password'):
 
         response = self.get_all_email()
         token = None

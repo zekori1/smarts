@@ -1,6 +1,5 @@
 import pytest
-
-from dm_api_account.models.account.post_v1_account_request_model import RegistrationRequestModel
+from apis.dm_api_account.models.account.post_v1_account_request_model import RegistrationRequestModel
 
 
 def test_post_v1_account(dm_api_account, dm_db):
