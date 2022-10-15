@@ -16,13 +16,6 @@ install in terminal PyCharm
 pip install -r requirements.txt
 ```
 
-Then import the package:
-
-```python
-import openapi_generator_helper
-```
-
-
 ## Author
 
 ```
