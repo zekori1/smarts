@@ -1,3 +1,4 @@
+###### Requirements without Version Specifiers ######
 requests
 pytest
 json
@@ -8,3 +9,15 @@ pyhamcrest
 records
 psycopg2
 jsondiff
+
+###### Requirements with Version Specifiers ######
+requests == 2.28.1
+pytest == 7.1.2
+jsonmodels == 2.5.1
+structlog == 22.1.0
+vyper-config == 1.1.1
+pyhamcrest == 2.0.4
+records == 0.5.3
+psycopg2 == 2.7.5
+jsondiff == 2.0.0
+
