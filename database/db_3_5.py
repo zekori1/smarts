@@ -1,8 +1,26 @@
 import inspect
 import uuid
+import time
+
 import records
 import structlog
 from typing import List, Dict
+
+
+def retrier(attempts=10):
+    def get_function(fn):
+        def get_args(*args, **kwargs):
+            for attempt in range(1, attempts + 1):
+                response = fn(*args, **kwargs)
+                print(f'Попытка выполнить запрос {attempt}')
+                time.sleep(2)
+                if len(response) > 0 :
+                    return response
+            raise AssertionError(f"Не удалось выполнить запрос, в течении {attempts} попыток")
+
+        return get_args
+
+    return get_function
 
 
 class DmDataBase:

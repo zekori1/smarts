@@ -1,9 +1,12 @@
 import pytest
 import structlog
+
+from apis.dm_api_account.models.login.post_v1_account_login_request_model import LoginCredentialsRequestModel
 from database.db_3_5 import DmDataBase
 from helpers.mailhog.mailhog_client import MailHogClient
 from service.dm_api_account import DmApiAccount
 from service.dm_api_forum import DmApiForum
+from helpers.assertions.assertions import Assertions
 from vyper import v
 from pathlib import Path
 
@@ -49,12 +52,12 @@ def mailhog():
     return MailHogClient(host=v.get('mailhog.host'))
 
 
-@pytest.fixture
+@pytest.fixture#(scope='session')
 def dm_api_account():
     return DmApiAccount(host=v.get('service.dm_api_account'))
 
 
-@pytest.fixture
+@pytest.fixture#(scope='session')
 def dm_api_forum():
     return DmApiForum(host=v.get('service.dm_api_forum'))
 
@@ -76,3 +79,21 @@ def dm_db():
         )
     yield db_connection
     # db_connection.close()
+
+
+@pytest.fixture#(autouse=True)
+def token(dm_api_account):
+    response = dm_api_account.login_api.post_v1_account_login(
+        json_data=LoginCredentialsRequestModel(
+            login=v.get('test_user.user_name'),
+            password=v.get('test_user.user_password'),
+
+        )
+    )
+    token = response.headers['X-Dm-Auth-Token']
+    dm_api_account.account_api.client.headers = {'X-Dm-Auth-Token':  token}
+    return token
+
+@pytest.fixture()
+def assertions(dm_db, mailhog):
+    return Assertions(db=dm_db, mail_server=mailhog)

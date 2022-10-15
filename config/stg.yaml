@@ -6,6 +6,10 @@ service:
 mailhog:
   host: http://localhost:5025
 
+test_user:
+  user_name: test_user_10
+  user_password: test_user_10
+
 database:
   postgresql:
     host: localhost

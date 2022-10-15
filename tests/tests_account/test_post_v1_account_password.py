@@ -1,5 +1,5 @@
 import pytest
-from apis.dm_api_account import LoginCredentialsRequestModel
+from apis.dm_api_account.models.login.post_v1_account_login_request_model import LoginCredentialsRequestModel
 from apis.dm_api_account.models.account.post_v1_account_password_request_model import ResetPasswordResponseModel
 
 
