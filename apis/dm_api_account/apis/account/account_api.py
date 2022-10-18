@@ -55,7 +55,7 @@ class AccountApi:
         assert response.status_code == status_code
         return response
 
-    def put_v1_account_password(self, x_dm_auth_token, json_data: ChangePasswordResponseModel):
+    def put_v1_account_password(self, x_dm_auth_token, json_data: ChangePasswordResponseModel, status_code: int = 200):
         headers = {
             'accept': 'text/plain',
             'X-Dm-Auth-Token': x_dm_auth_token,
@@ -68,10 +68,11 @@ class AccountApi:
             headers=headers,
             json=json_data.to_struct()
         )
+        assert response.status_code == status_code
         return response
         # один токен берем от авторизации другой от смены пароля на почте
 
-    def put_v1_account_email(self, x_dm_auth_token, json_data: ChangeEmailResponseModel):
+    def put_v1_account_email(self, x_dm_auth_token, json_data: ChangeEmailResponseModel, status_code: int = 200):
         headers = {
             'accept': 'text/plain',
             'X-Dm-Auth-Token': x_dm_auth_token,
@@ -83,4 +84,5 @@ class AccountApi:
             headers=headers,
             json=json_data.to_struct()
         )
+        assert response.status_code == status_code
         return response
