@@ -1,27 +1,15 @@
-import pytest
-from apis.dm_api_account.models.login.post_v1_account_login_request_model import LoginCredentialsRequestModel
+from vyper import v
 from apis.dm_api_account.models.account.post_v1_account_password_request_model import ResetPasswordResponseModel
 
 
-@pytest.mark.parametrize('login, password, email, remember_me',
-                         [('test_user_10', 'test_user_10', 'test_user_10@mail.ru', True)])
-def test_post_v1_account_login(dm_api_account, dm_db, login, password, remember_me, email):
-    response = dm_api_account.login_api.post_v1_account_login(
-        json_data=LoginCredentialsRequestModel(
-            login=login,
-            password=password,
-            remember_me=remember_me
-        )
-    )
-    x_dm = response.headers.get('X-Dm-Auth-Token')
-    print(x_dm)
-    assert response.status_code == 200
-    response = dm_api_account.account_api.post_v1_account_password(
-        x_dm_auth_token=x_dm,
+def test_post_v1_account_password(dm_api_account, dm_db, user_creation, x_dm_auth_token):
+    dm_api_account.account_api.post_v1_account_password(
+        x_dm_auth_token=x_dm_auth_token,
         json_data=ResetPasswordResponseModel(
-            login=login,
-            email=email
+            login=v.get('test_user.user_name'),
+            email=v.get('test_user.user_email')
         )
+
     )
-    assert response.status_code == 200
-    rows = dm_db.get_user_by_login(login=login)
+    dm_db.get_user_by_login(login=v.get('test_user.user_name'))
+    dm_db.get_user_by_email(email=v.get('test_user.user_email'))

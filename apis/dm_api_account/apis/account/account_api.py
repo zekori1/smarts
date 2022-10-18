@@ -15,25 +15,31 @@ class AccountApi:
         if headers:
             self.client.headers = self.headers
 
-    def post_v1_account(self, json_data: RegistrationRequestModel):
+    def post_v1_account(self, json_data: RegistrationRequestModel, status_code: int = 201):
         response = self.client.post(
             path=f'/v1/account',
             json=json_data.to_struct()
         )
+        assert response.status_code == status_code
         return response
 
-    def get_v1_account(self, status_code=200) -> UserDetailsEnvelopeResponseModel:
-        response = self.client.get(path=f'/v1/account')
+    def get_v1_account(self, x_dm_auth_token, status_code: int = 200) -> UserDetailsEnvelopeResponseModel:
+        headers = {
+            'accept': 'text/plain',
+            'X-Dm-Auth-Token': x_dm_auth_token,
+        }
+        response = self.client.get(path=f'/v1/account', headers=headers)
         response_json = response.json()
         assert response.status_code == status_code
         return UserDetailsEnvelopeResponseModel(**response_json)
 
-    def put_v1_account_token(self, token: str) -> UserEnvelopeResponseModel:
+    def put_v1_account_token(self, token: str, status_code: int = 200) -> UserEnvelopeResponseModel:
         response = self.client.put(path=f'/v1/account/{token}')
         response_json = response.json()
+        assert response.status_code == status_code
         return UserEnvelopeResponseModel(**response_json)
 
-    def post_v1_account_password(self, x_dm_auth_token, json_data: ResetPasswordResponseModel):
+    def post_v1_account_password(self, x_dm_auth_token, json_data: ResetPasswordResponseModel, status_code: int = 200):
         headers = {
             'accept': 'text/plain',
             'X-Dm-Auth-Token': x_dm_auth_token,
@@ -46,6 +52,7 @@ class AccountApi:
             headers=headers,
             json=json_data.to_struct()
         )
+        assert response.status_code == status_code
         return response
 
     def put_v1_account_password(self, x_dm_auth_token, json_data: ChangePasswordResponseModel):

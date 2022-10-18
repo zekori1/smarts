@@ -9,18 +9,14 @@ class LoginApi:
         self.host = host
         self.client = RestClient(host=self.host)
         if headers:
-            self.client.headers = self
+            self.client.headers = self.headers
 
-    def post_v1_account_login(self, json_data: LoginCredentialsRequestModel) -> requests.Response:
-        headers = {
-            'accept': 'text/plain',
-        }
-
+    def post_v1_account_login(self, json_data: LoginCredentialsRequestModel, status_code: int = 200) -> requests.Response:
         response = self.client.post(
             path=f'/v1/account/login',
-            headers=headers,
             json=json_data.to_struct()
         )
+        assert response.status_code == status_code
         return response
 
     def delete_v1_account_login(self, x_dm_auth_token):

@@ -9,6 +9,8 @@ mailhog:
 test_user:
   user_name: test_user_10
   user_password: test_user_10
+  user_email: test_user_10@mail.ru
+  remember_me: True
 
 database:
   postgresql:

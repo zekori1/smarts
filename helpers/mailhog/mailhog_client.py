@@ -30,7 +30,6 @@ class MailHogClient:
         if headers:
             self.client.headers = self.headers
 
-
     def get_all_email(self, limit=50):
         params = {
             'limit': str(limit),
@@ -55,6 +54,7 @@ class MailHogClient:
     def get_email_by_user_name(self, user_name):
         emails = [_ for _ in self.get_all_email().json()['items'] if user_name in str(_)]
         return emails
+
     def get_token(self, user='test_user_10', token_type='password'):
 
         response = self.get_all_email()

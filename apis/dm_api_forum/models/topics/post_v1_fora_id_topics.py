@@ -22,9 +22,9 @@ class Forum(Base):
     unread_topics_count = IntField(name='unreadTopicsCount', default=0)
 
 
-# class CommonBbText(Base):
-#     value = StringField()
-#     parse_mode = StringField(name='parseMode', validators=[info_db_text_validator])
+class CommonBbText(Base):
+    value = StringField()
+    parse_mode = StringField(name='parseMode', validators=[info_db_text_validator])
 
 
 class Rating(Base):
@@ -35,8 +35,7 @@ class Rating(Base):
 
 class User(Base):
     login = StringField()
-    roles = ListField(str, default=['Guest', 'Player'])
-    # roles = ListField(str, validators=[roles_validator])
+    roles = ListField(str, validators=[roles_validator])
     medium_picture_url = StringField(name='mediumPictureUrl', default='')
     small_picture_url = StringField(name='smallPictureUrl', default='')
     status = StringField(default='')

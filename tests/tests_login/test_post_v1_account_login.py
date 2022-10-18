@@ -1,5 +1,4 @@
 import pytest
-
 from apis.dm_api_account.models.login.post_v1_account_login_request_model import LoginCredentialsRequestModel
 
 
@@ -12,5 +11,5 @@ def test_post_v1_account_login(dm_api_account, dm_db, login, password, remember_
             remember_me=remember_me
         )
     )
-    x_dm = response.headers.get('X-Dm-Auth-Token')
-    print(x_dm)
+    x_dm_auth_token = response.headers.get('X-Dm-Auth-Token')
+    print(x_dm_auth_token)
