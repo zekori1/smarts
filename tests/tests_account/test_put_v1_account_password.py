@@ -1,31 +1,17 @@
-import pytest
-from apis.dm_api_account.models.login.post_v1_account_login_request_model import LoginCredentialsRequestModel
+from hamcrest import assert_that, has_properties
+from vyper import v
 from apis.dm_api_account.models.account.put_v1_account_password_request_model import ChangePasswordResponseModel
 
 
-@pytest.mark.parametrize('login, password, email, remember_me, new_password',
-                         [('test_user_10', 'test_user_10', 'test_user_10@mail.ru', True, 'test_user_xui')])
-def test_post_v1_account_login(dm_api_account, mailhog, dm_db, login, password, remember_me, email, new_password):
-    response = dm_api_account.login_api.post_v1_account_login(
-        json_data=LoginCredentialsRequestModel(
-            login=login,
-            password=password,
-            remember_me=remember_me
-        )
-    )
-    x_dm = response.headers.get('X-Dm-Auth-Token')
-    print(x_dm)
-    assert response.status_code == 200
-    # def test_post_v1_account_password():
+def test_put_v1_account_password(dm_api_account, mailhog, dm_db, user_creation, x_dm_auth_token):
     activation_token = mailhog.get_token()
-    response = dm_api_account.account_api.put_v1_account_password(
-        x_dm_auth_token=x_dm,
+    dm_api_account.account_api.put_v1_account_password(
+        x_dm_auth_token=x_dm_auth_token,
         json_data=ChangePasswordResponseModel(
-            login=login,
+            login=v.get('test_user.user_name'),
             token=activation_token,
-            old_password=password,
-            new_password=new_password
+            old_password=v.get('test_user.user_password'),
+            new_password=v.get('test_user.new_password')
         )
     )
-    assert response.status_code == 200
-    rows = dm_db.get_user_by_login(login=login)
+    dm_db.get_user_by_login(login=v.get('test_user.user_name'))
